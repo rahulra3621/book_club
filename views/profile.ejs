@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - <%=user.username%></title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <nav>
+        <a href="/home/<%=user.id%>">Book Club</a>
+        <a href="/profile/<%=user.id%>"><%=user.username%></a>
+        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/logout">Log Out</a>
+    </nav>
+
+    <fieldset>
+        <strong>Username: </strong><span><%=user.username%></span> <br>
+        <strong>E-mail: </strong><span><%=user.usermail%></span> <br>
+        <strong>Wallet: </strong><span><%=user.userwallet%> Credits</span> <br>
+        <a href="/recharge/<%=user.id%>">Recharge</a>
+    </fieldset>
+</body>
+</html>

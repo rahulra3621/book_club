@@ -9,10 +9,9 @@
 <body>
     <nav>
         <a href="/home/<%=user.id%>">Book Club</a>
-        <span>
-            <%=user.username%>
-        </span>
+        <a href="/profile/<%=user.id%>"><%=user.username%></a>
         <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/logout">Log Out</a>
     </nav>
     <main>
         <h1>Book Returned Successfully</h1>
@@ -23,6 +22,7 @@
             <p><strong>Author Name:</strong> <%=book.bookAuthor%></p>
             <p><strong>Publisher Name:</strong> <%=book.bookPublisher%></p>
             <p><strong>Book Price:</strong> ₹<%=book.bookPrice%></p>
+            <!-- <p><strong>Your Credits have been refunded!</strong></p> -->
             <div class="actions">
                 <a class="btn" href="/home/<%=user.id%>">Back to Home</a>
                 <a class="btn secondary" href="/mybooks/<%=user.id%>">View My Books</a>

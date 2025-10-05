@@ -9,9 +9,8 @@
 <body>
     <nav>
         <a href="/home/<%=user.id%>">Book Club</a>
-        <span>
-            <%=user.username%>
-        </span>
+        <a href="/profile/<%=user.id%>"><%=user.username%></a>
+        <a href="/mybooks/<%=user.id%>">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
     <main>

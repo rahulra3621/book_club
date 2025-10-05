@@ -1,6 +1,7 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
+const { type } = require('os');
 const path = require('path');
 const uri = 'mongodb://localhost:27017/bookClubApp';
 
@@ -59,6 +60,10 @@ const userSchema = new mongoose.Schema({
     usermail: {
         type: String,
         required: true,
+    },
+    userwallet:{
+        type: Number,
+        default: 0,
     },
     bookIssued: {
         type: Object,
@@ -148,9 +153,8 @@ app.route('/reset')
 // ---------------------------------- Log Out ---------------------------------------------------
 
 app.route('/logout')
-    .get((req,res)=>{
-        res.render('index')
-    })
+    .get((req,res)=>{res.render('index')
+    });
 
 // ----------------------------------- Homepage -----------------------------------------------
 
@@ -158,7 +162,14 @@ app.get('/home/:id', async (req, res) => {
     const books = await bookModel.find();
     const user = await userModel.findById(req.params.id)
     res.render('home', {user, books, err:null})
-})
+});
+
+// ------------------------------------- Profile ---------------------------------------------------
+
+app.get('/profile/:id', async (req,res)=>{
+    const user = await userModel.findById(req.params.id);
+    res.render('profile', {user})
+});
 
 // ----------------------------------------- Book Rent ---------------------------------------
 
@@ -170,13 +181,24 @@ app.get('/home/rent/:userId/:bookId', async (req, res) => {
         res.render('home', {user, books, id: book._id, err: 'Book is Already Issued to a User!' })
     }
     else {
-        await bookModel.findOneAndUpdate(book, {
-            isIssued: true,
-            isIssuedTo: user,
-        })
-        res.render('rentSuccess', {user,book})
+        res.render('checkout', {user,book});
     }
 })
+
+// ----------------------------------------------- Checkout ------------------------------------------------------
+
+app.get('/checkout/:userId/:bookId', async (req,res)=>{
+    const user = await userModel.findById(req.params.userId);
+    const book = await bookModel.findByIdAndUpdate(req.params.bookId, {
+        isIssued: true,
+        isIssuedTo: user,
+    });
+    const newAmount = (user.userwallet)-(book.bookPrice);
+    await userModel.findOneAndUpdate(user, {
+        userwallet:newAmount,
+    })
+    res.render('rentSuccess', {user,book});
+});
 
 // ------------------------------------- My Books -----------------------------
 
@@ -193,10 +215,14 @@ app.route('/mybooks/return/:userId/:bookId')
     .get( async(req,res)=>{
         const user = await userModel.findById(req.params.userId);
         const book = await bookModel.findById(req.params.bookId);
-        await bookModel.findOneAndUpdate(book ,{
+        // const newAmount = (user.userwallet)+(book.bookPrice);
+        await bookModel.findOneAndUpdate(book, {
             isIssued: false,
             isIssuedTo:null,
-        })
+        });
+        // await userModel.findOneAndUpdate(user, {
+        //     userwallet:newAmount,
+        // });
         res.render('returnSuccess', {user,book})
     })
 
@@ -221,7 +247,27 @@ app.get('/search/:id', async (req,res)=>{
         res.render('home', {user,books, err:null});
     }
 
-})
+});
+
+
+// -------------------------------------------- Recharge ---------------------------------------------------------------
+
+app.get('/recharge/:id', async (req,res)=>{
+    const user = await userModel.findById(req.params.id);
+    res.render('recharge', {user});
+});
+
+app.post('/recharge/:id', async (req,res)=>{
+    const {credit} = req.body;
+    const user = await userModel.findByIdAndUpdate(req.params.id);
+    const newAmount = (user.userwallet)+Number(credit);
+    await userModel.findOneAndUpdate(user, {
+        userwallet:newAmount,
+    });
+    res.redirect('/profile/'+user._id);
+
+
+});
 
 
 // ----------------------------------- App Listener ----------------------------------------------------------------------

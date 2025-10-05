@@ -11,9 +11,7 @@
 <body>
     <nav>
         <a href="/home/<%=user.id%>">Book Club</a>
-        <span>
-            <%=user.username%>
-        </span>
+        <a href="/profile/<%=user.id%>"><%=user.username%></a>
         <a href="/mybooks/<%=user.id%>">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
@@ -34,7 +32,7 @@
                     <h4><%=book.bookName%></h4>
                     <p class="muted-block">by <strong><%=book.bookAuthor%></strong></p>
                     <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
-                    <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
+                    <p><strong>Price:</strong> ₹<%=book.bookPrice%>/day</p>
                     <div class="actions">
                         <a class="btn" href="/home/rent/<%=user._id%>/<%=book._id%>">Rent</a>
                     </div>
