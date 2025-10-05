@@ -31,3 +31,5 @@ tmp/
 temp/
 
 
+package_lock.json
+package.json
