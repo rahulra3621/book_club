@@ -93,6 +93,7 @@ app.route('/login')
     });
 
 // --------------------------------- Register ------------------------------------------------
+
 app.route('/register')
     .get( (req, res) => {
         res.render('register', { err: null });
@@ -159,14 +160,9 @@ app.get('/home/:id', async (req, res) => {
     res.render('home', {user, books, err:null})
 })
 
-// app.post('/home', async (req,res)=>{
-//     const
-// })
-
 // ----------------------------------------- Book Rent ---------------------------------------
 
 app.get('/home/rent/:userId/:bookId', async (req, res) => {
-    // const { bookId, userId } = req.body;
     const book = await bookModel.findById(req.params.bookId);
     const user = await userModel.findById(req.params.userId);
     if (book.isIssued) {
@@ -180,7 +176,6 @@ app.get('/home/rent/:userId/:bookId', async (req, res) => {
         })
         res.render('rentSuccess', {user,book})
     }
-    // console.log(book);
 })
 
 // ------------------------------------- My Books -----------------------------
@@ -214,7 +209,6 @@ app.get('/search/:id', async (req,res)=>{
     q = q.toLowerCase();
 
     console.log(q);
-    // var books = []
     const allbooks = await bookModel.find()
     let books = [];
 
@@ -227,20 +221,10 @@ app.get('/search/:id', async (req,res)=>{
         res.render('home', {user,books, err:null});
     }
 
-    // searchInput.addEventListener('keyup', (event) => {
-    //     const searchTerm = event.target.value.toLowerCase();
-    //     books.forEach(book => {
-    //         const bookName = book.bookName.toLowerCase();
-    //         const bookAuthor = book.bookAuthor.toLowerCase();
-    //         const bookPublisher = book.bookPublisher.toLowerCase();
-    //         if (bookName.includes(searchTerm) || bookAuthor.includes(searchTerm) || bookPublisher.includes(searchTerm)) {
-    //             filteredBooks = filteredBooks.push(book);
-    //         }
-    //     });
-    //     res.render('home',{filteredBooks})
-    // });
-
 })
+
+
+// ----------------------------------- App Listener ----------------------------------------------------------------------
 
 app.listen(4000, () => {
     console.log('App running on port: 4000');
