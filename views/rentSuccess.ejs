@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Rent Success</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <nav>
+        <a href="/home/<%=user.id%>">Book Club</a>
+        <span>
+            <%=user.username%>
+        </span>
+        <a href="/mybooks/<%=user.id%>">My Books</a>
+    </nav>
+    <main>
+        <h1>Book Rented Successfully</h1>
+        <h3>Rent Details</h3>
+        <div class="card">
+            <p><strong>Username:</strong> <%=user.username%></p>
+            <p><strong>Book Name:</strong> <%=book.bookName%></p>
+            <p><strong>Author Name:</strong> <%=book.bookAuthor%></p>
+            <p><strong>Publisher Name:</strong> <%=book.bookPublisher%></p>
+            <p><strong>Book Price:</strong> ₹<%=book.bookPrice%></p>
+            <div class="actions">
+                <a class="btn" href="/home/<%=user.id%>">Back to Home</a>
+                <a class="btn secondary" href="/mybooks/<%=user.id%>">View My Books</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

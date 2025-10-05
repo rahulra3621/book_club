@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookClub - Login</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Book Club</a>
+        <span class="muted">Welcome back</span>
+        <div>
+            <a href="/register">Register</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Login</h1>
+        <form action="" method="post">
+            <label>Email</label>
+            <input type="email" name="email" id="email" placeholder="you@example.com">
+            <label>Password</label>
+            <input type="password" name="password" id="password" placeholder="••••••••">
+            <% if (err) { %>
+                <p class="error"><%=err%></p>
+            <% } %>
+            <div class="actions">
+                <button type="submit">Login</button>
+                <a class="btn secondary" href="/reset">Reset Password</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

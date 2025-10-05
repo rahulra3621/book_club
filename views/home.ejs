@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookClub - Homepage</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <nav>
+        <a href="/home/<%=user.id%>">Book Club</a>
+        <span>
+            <%=user.username%>
+        </span>
+        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/logout">Log Out</a>
+    </nav>
+    <main>
+        <form action="/search/<%=user.id%>" method="GET">
+            <input type="text" name="q" placeholder="Search books, authors, publishers...">
+            <button type="submit">Search</button>
+        </form>
+
+        <h1>Books</h1>
+        <% let count=1 %>
+        <div class="grid">
+            <% for (const book of books) { %>
+                <div class="card">
+                    <% if (err && book.id==id) { %>
+                        <p class="error"><%=err%></p>
+                    <% } %>
+                    <h4><%=book.bookName%></h4>
+                    <p class="muted-block">by <strong><%=book.bookAuthor%></strong></p>
+                    <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
+                    <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
+                    <div class="actions">
+                        <a class="btn" href="/home/rent/<%=user._id%>/<%=book._id%>">Rent</a>
+                    </div>
+                </div>
+                <%count++%>
+            <% } %>
+        </div>
+    </main>
+</body>
+
+</html>
