@@ -8,9 +8,9 @@
 </head>
 <body>
     <nav>
-        <a href="/home/<%=user.id%>">Book Club</a>
-        <a href="/profile/<%=user.id%>"><%=user.username%></a>
-        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/home">Book Club</a>
+        <a href="/profile"><%=user.username%></a>
+        <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
     <main>
@@ -22,10 +22,10 @@
             <p><strong>Author Name:</strong> <%=book.bookAuthor%></p>
             <p><strong>Publisher Name:</strong> <%=book.bookPublisher%></p>
             <p><strong>Book Price:</strong> ₹<%=book.bookPrice%></p>
-            <!-- <p><strong>Your Credits have been refunded!</strong></p> -->
+            <p><strong>Your 90% Credits have been refunded!</strong></p>
             <div class="actions">
-                <a class="btn" href="/home/<%=user.id%>">Back to Home</a>
-                <a class="btn secondary" href="/mybooks/<%=user.id%>">View My Books</a>
+                <a class="btn" href="/home">Back to Home</a>
+                <a class="btn secondary" href="/mybooks">View My Books</a>
             </div>
         </div>
     </main>

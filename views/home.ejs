@@ -10,13 +10,13 @@
 
 <body>
     <nav>
-        <a href="/home/<%=user.id%>">Book Club</a>
-        <a href="/profile/<%=user.id%>"><%=user.username%></a>
-        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/home">Book Club</a>
+        <a href="/profile"><%=user.username%></a>
+        <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
     <main>
-        <form action="/search/<%=user.id%>" method="GET">
+        <form action="/search" method="GET">
             <input type="text" name="q" placeholder="Search books, authors, publishers...">
             <button type="submit">Search</button>
         </form>
@@ -34,7 +34,7 @@
                     <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
                     <p><strong>Price:</strong> ₹<%=book.bookPrice%>/day</p>
                     <div class="actions">
-                        <a class="btn" href="/home/rent/<%=user._id%>/<%=book._id%>">Rent</a>
+                        <a class="btn" href="/home/rent/<%=book._id%>">Rent</a>
                     </div>
                 </div>
                 <%count++%>

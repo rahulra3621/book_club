@@ -8,16 +8,16 @@
 </head>
 <body>
     <nav>
-        <a href="/home/<%=user.id%>">Book Club</a>
-        <a href="/profile/<%=user.id%>"><%=user.username%></a>
-        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/home">Book Club</a>
+        <a href="/profile"><%=user.username%></a>
+        <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
     <h1>Checkout</h1>
     <fieldset>
         <p>Item Name: <span><%=book.bookName%></span></p>
         <p>Price: <span><%=book.bookPrice%> credits</span></p>
-        <a href="/checkout/<%=user.id%>/<%=book.id%>">Pay <%=book.bookPrice%> credits</a>
+        <a href="/checkout/<%=book.id%>">Pay <%=book.bookPrice%> credits</a>
     </fieldset>
 </body>
 </html>

@@ -18,9 +18,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "alert": "^6.0.2",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.3",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "popups": "^1.1.3"
   }
 }

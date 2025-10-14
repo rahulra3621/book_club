@@ -8,9 +8,9 @@
 </head>
 <body>
     <nav>
-        <a href="/home/<%=user.id%>">Book Club</a>
-        <a href="/profile/<%=user.id%>"><%=user.username%></a>
-        <a href="/mybooks/<%=user.id%>">My Books</a>
+        <a href="/home">Book Club</a>
+        <a href="/profile"><%=user.username%></a>
+        <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
 
@@ -18,7 +18,7 @@
         <strong>Username: </strong><span><%=user.username%></span> <br>
         <strong>E-mail: </strong><span><%=user.usermail%></span> <br>
         <strong>Wallet: </strong><span><%=user.userwallet%> Credits</span> <br>
-        <a href="/recharge/<%=user.id%>">Recharge</a>
+        <a href="/recharge">Recharge</a>
     </fieldset>
 </body>
 </html>
