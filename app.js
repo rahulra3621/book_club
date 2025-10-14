@@ -80,28 +80,20 @@ const userModel = mongoose.model('user', userSchema);
 
 // ---------------------------------- AuthMiddleware Functionality -------------------------------
 
-async function authMiddleware(req, res, next) {
+function authMiddleware(req, res, next) {
     try {
-        let token;
-        if (!token && req.cookies.token && req.cookies) {
-            token = req.cookies.token;
-        }
-        if (!token) {
-            return res.send('Access Denied. No Token Provided')
-        }
-        const verifiedUser = await jwt.verify(token, SECRET_KEY);
-        if (!verifiedUser) {
-            res.json({
-                response: "Unauthorized Access!!!",
-            })
-        }
+        const token = req.cookies?.token;
+        if (!token) return res.redirect('/login');
+
+        const verifiedUser = jwt.verify(token, SECRET_KEY);
         req.id = verifiedUser.id;
         next();
-    } catch (e) {
-        res.cookie('err', `Token Expired! Login Again`);
-        return res.redirect('/login')
+    } catch (err) {
+        console.error('JWT Error:', err.message);
+        return res.clearCookie('token').redirect('/login');
     }
 }
+
 
 app.get('/', (req, res) => {
     res.render('index');
