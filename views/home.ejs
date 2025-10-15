@@ -11,7 +11,9 @@
 <body>
     <nav>
         <a href="/home">Book Club</a>
-        <a href="/profile"><%=user.username%></a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
         <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
@@ -23,24 +25,40 @@
 
         <h1>Books</h1>
         <% let count=1 %>
-        <div class="grid">
-            <% for (const book of books) { %>
-                <div class="card">
-                    <% if (err && book.id==id) { %>
-                        <p class="error"><%=err%></p>
-                    <% } %>
-                    <h4><%=book.bookName%></h4>
-                    <p class="muted-block">by <strong><%=book.bookAuthor%></strong></p>
-                    <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
-                    <p><strong>Price:</strong> ₹<%=book.bookPrice%>/day</p>
-                    <div class="actions">
-                        <a class="btn" href="/home/rent/<%=book._id%>">Rent</a>
+            <div class="grid">
+                <% for (const book of books) { %>
+                    <div class="card">
+                        <% if (err && book.id==id) { %>
+                            <p class="error">
+                                <%=err%>
+                            </p>
+                            <% } %>
+                                <h4>
+                                    <%=book.bookName%>
+                                </h4>
+                                <p class="muted-block">by <strong>
+                                        <%=book.bookAuthor%>
+                                    </strong></p>
+                                <p class="muted-block">Publisher: <%=book.bookPublisher%>
+                                </p>
+                                <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
+                                <div class="actions">
+                                    <a class="btn" href="/home/rent/<%=book._id%>">Rent</a>
+                                </div>
                     </div>
-                </div>
-                <%count++%>
-            <% } %>
-        </div>
+                    <%count++%>
+                        <% } %>
+            </div>
     </main>
+
+    <script>
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

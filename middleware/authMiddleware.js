@@ -6,7 +6,12 @@ const jwt = require("jsonwebtoken");
 function authMiddleware(req, res, next) {
     try {
         const token = req.cookies?.token;
-        res.setHeader('Cache-Control', 'no-store')
+        res.set({
+            'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, private',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+            'Surrogate-Control': 'no-store'
+        });
         if (!token) return res.redirect('/login');
 
         const verifiedUser = jwt.verify(token, SECRET_KEY);

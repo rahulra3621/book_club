@@ -81,14 +81,14 @@ bookRouter.route('/mybooks/return/:bookId')
     .get(async (req, res) => {
         const user = await userModel.findById(req.id);
         const book = await bookModel.findById(req.params.bookId);
-        const newAmount = (user.userwallet) + ((book.bookPrice) - (book.bookPrice) / 10);
+        // const newAmount = (user.userwallet) + ((book.bookPrice) - (book.bookPrice) / 10);
         await bookModel.findOneAndUpdate(book, {
             isIssued: false,
             isIssuedTo: null,
         });
-        await userModel.findOneAndUpdate(user, {
-            userwallet: newAmount,
-        });
+        // await userModel.findOneAndUpdate(user, {
+        //     userwallet: newAmount,
+        // });
         res.render('returnSuccess', { user, book })
     })
 

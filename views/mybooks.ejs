@@ -22,33 +22,44 @@
         <h1>My Books</h1>
         <div class="grid">
             <% let count=1 %>
-            <% if (!books) { %>
-                <% if (err) { %>
-                    <p class="error">
-                        <%=err%>
-                    </p>
-                <% } %>
-            <% } %>
-            <% for (const book of books) { %>
-                <% if (book.isIssuedTo==user.id) { %>
-                    <div class="card">
-                        <h4>
-                            <%=book.bookName%>
-                        </h4>
-                        <p class="muted-block">by <strong>
-                            <%=book.bookAuthor%>
-                        </strong></p>
-                        <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
-                        <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
-                        <div class="actions">
-                            <a class="btn" href="/mybooks/return/<%=book._id%>">Return</a>
-                        </div>
-                    </div>
-                <% } %>
-                <% count++ %>
-            <% } %>
+                <% if (!books) { %>
+                    <% if (err) { %>
+                        <p class="error">
+                            <%=err%>
+                        </p>
+                        <% } %>
+                            <% } %>
+                                <% for (const book of books) { %>
+                                    <% if (book.isIssuedTo==user.id) { %>
+                                        <div class="card">
+                                            <h4>
+                                                <%=book.bookName%>
+                                            </h4>
+                                            <p class="muted-block">by <strong>
+                                                    <%=book.bookAuthor%>
+                                                </strong></p>
+                                            <p class="muted-block">Publisher: <%=book.bookPublisher%>
+                                            </p>
+                                            <p><strong>Price:</strong> ₹<%=book.bookPrice%>
+                                            </p>
+                                            <div class="actions">
+                                                <a class="btn" href="/mybooks/return/<%=book._id%>">Return</a>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                            <% count++ %>
+                                                <% } %>
         </div>
     </main>
+
+    <script>
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

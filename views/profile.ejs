@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - <%=user.username%></title>
+    <title>My Profile - <%=user.username%>
+    </title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
     <nav>
         <a href="/home">Book Club</a>
-        <a href="/profile"><%=user.username%></a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
         <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
 
     <fieldset>
-        <strong>Username: </strong><span><%=user.username%></span> <br>
-        <strong>E-mail: </strong><span><%=user.usermail%></span> <br>
-        <strong>Wallet: </strong><span><%=user.userwallet%> Credits</span> <br>
-        <a href="/recharge">Recharge</a>
+        <strong>Username: </strong><span>
+            <%=user.username%>
+        </span> <br>
+        <strong>E-mail: </strong><span>
+            <%=user.usermail%>
+        </span> <br>
+        <strong>Wallet: </strong><span>
+            <%=user.userwallet%> Credits
+        </span> <br>
+        <a class="btn" href="/recharge">Recharge</a>
     </fieldset>
+    <script>
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
+
+
 </html>
