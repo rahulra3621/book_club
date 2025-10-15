@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Books - <%=user.username%></title>
+    <title>My Books - <%=user.username%>
+    </title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
     <nav>
         <a href="/home">Book Club</a>
-        <a href="/profile"><%=user.username%></a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
         <a href="/mybooks">My Books</a>
         <a href="/logout">Log Out</a>
     </nav>
     <main>
         <h1>My Books</h1>
         <div class="grid">
-        <% let count=1 %>
-        <% for (const book of books) { %>
-            <% if (book.isIssuedTo == user.id) { %>
-                <div class="card">
-                    <h4><%=book.bookName%></h4>
-                    <p class="muted-block">by <strong><%=book.bookAuthor%></strong></p>
-                    <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
-                    <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
-                    <div class="actions">
-                        <a class="btn" href="/mybooks/return/<%=book._id%>">Return</a>
-                    </div>
-                </div>
+            <% let count=1 %>
+            <% if (!books) { %>
+                <% if (err) { %>
+                    <p class="error">
+                        <%=err%>
+                    </p>
+                <% } %>
             <% } %>
-            <% count++ %>
-        <% } %>
+            <% for (const book of books) { %>
+                <% if (book.isIssuedTo==user.id) { %>
+                    <div class="card">
+                        <h4>
+                            <%=book.bookName%>
+                        </h4>
+                        <p class="muted-block">by <strong>
+                            <%=book.bookAuthor%>
+                        </strong></p>
+                        <p class="muted-block">Publisher: <%=book.bookPublisher%></p>
+                        <p><strong>Price:</strong> ₹<%=book.bookPrice%></p>
+                        <div class="actions">
+                            <a class="btn" href="/mybooks/return/<%=book._id%>">Return</a>
+                        </div>
+                    </div>
+                <% } %>
+                <% count++ %>
+            <% } %>
         </div>
     </main>
 </body>
+
 </html>
