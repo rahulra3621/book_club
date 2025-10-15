@@ -2,6 +2,9 @@
 
 An Express.js Book Club application using EJS views, MongoDB (via Mongoose), cookies, and JWT-based auth middleware.
 
+## Live Demo
+- App on Vercel: [BookClubApp Deployment](https://book-club-git-main-rahul-rajputs-projects-c3ee2aaf.vercel.app?_vercel_share=yR2EAMEVzmp2A3Homguh4FWRbwGSAwBh)
+
 ## Prerequisites
 - Node.js (LTS recommended)
 - MongoDB instance (local or remote)
