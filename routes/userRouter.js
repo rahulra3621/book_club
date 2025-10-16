@@ -35,7 +35,7 @@ userRouter.route('/login')
             }
         }
         catch(e){
-            res.status(403).render('login', { err: 'Login Failed!' })
+            res.status(403).render('login', { err: 'Login Failed!'+e })
         }
 
     });
