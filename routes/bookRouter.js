@@ -12,7 +12,7 @@ const bookRouter = express.Router();
 bookRouter.route('/logout')
     .get((req, res) => {
         res.cookie('token', null)
-        res.render('index')
+        return res.status(200).render('index')
     });
 
 
@@ -21,14 +21,15 @@ bookRouter.route('/logout')
 bookRouter.get('/home', async (req, res) => {
     const books = await bookModel.find();
     const user = await userModel.findById(req.id)
-    res.render('home', { user, books, err: null })
+    let searchInp = null;
+    return res.status(200).render('home', { user, books, searchInp, err: null })
 });
 
 // ------------------------------------- Profile ---------------------------------------------------
 
 bookRouter.get('/profile', async (req, res) => {
     const user = await userModel.findById(req.id);
-    res.render('profile', { user })
+    return res.status(200).render('profile', { user })
 });
 
 // ----------------------------------------- Book Rent ---------------------------------------
@@ -38,10 +39,10 @@ bookRouter.get('/home/rent/:bookId', async (req, res) => {
     const user = await userModel.findById(req.id);
     if (book.isIssued) {
         const books = await bookModel.find();
-        res.render('home', { user, books, id: book._id, err: 'Book is Already Issued to a User!' })
+        return res.status(403).render('home', { user, books, id: book._id, searchInp:null, err: 'Book is Already Issued to a User!' })
     }
     else {
-        res.render('checkout', { user, book });
+        return res.status(200).render('checkout', { user, book });
     }
 })
 
@@ -59,10 +60,10 @@ bookRouter.get('/checkout/:bookId', async (req, res) => {
         await userModel.findOneAndUpdate(user, {
             userwallet: newAmount,
         })
-        res.render('rentSuccess', { user, book });
+        return res.status(200).render('rentSuccess', { user, book });
     }
     else {
-        res.render('recharge', { user, err: "Insufficient Amount! Please Recharge First." })
+        return res.status(402).render('recharge', { user, err: "Insufficient Amount! Please Recharge First." })
     }
 });
 
@@ -70,47 +71,65 @@ bookRouter.get('/checkout/:bookId', async (req, res) => {
 
 bookRouter.route('/mybooks')
     .get(async (req, res) => {
-        const user = await userModel.findById(req.id);
-        const books = await bookModel.find();
-        res.render('mybooks', { user, books });
+        try {
+            const user = await userModel.findById(req.id);
+            const books = await bookModel.find();
+            return res.status(200).render('mybooks', { user, books });
+        }
+        catch (e) {
+            return res.status(400).render('mybooks', { err: 'Unable to Fetch Books Error: ' + e })
+        }
     })
 
 // ------------------------------------ Return Book -----------------------------------
 
 bookRouter.route('/mybooks/return/:bookId')
     .get(async (req, res) => {
-        const user = await userModel.findById(req.id);
-        const book = await bookModel.findById(req.params.bookId);
-        // const newAmount = (user.userwallet) + ((book.bookPrice) - (book.bookPrice) / 10);
-        await bookModel.findOneAndUpdate(book, {
-            isIssued: false,
-            isIssuedTo: null,
-        });
-        // await userModel.findOneAndUpdate(user, {
-        //     userwallet: newAmount,
-        // });
-        res.render('returnSuccess', { user, book })
+        try {
+            const user = await userModel.findById(req.id);
+            const book = await bookModel.findById(req.params.bookId);
+            if (!book) throw ""
+            if (book.isIssued == false) {
+                return res.render('404', { err: 'Book was not Issued' })
+            }
+            await bookModel.findOneAndUpdate(book, {
+                isIssued: false,
+                isIssuedTo: null,
+            });
+            return res.status(200).render('returnSuccess', { user, book })
+        }
+        catch (e) {
+            return res.status(404).render('404', { err: 'Invalid Book ID' })
+        }
     })
 
 
 // ---------------------------------- Book Search Functionality ---------------------------------
 
 bookRouter.get('/search', async (req, res) => {
-    const user = await userModel.findById(req.id);
-    var { q } = (req.query);
-    q = q.toLowerCase();
+    try {
+        const user = await userModel.findById(req.id);
+        var { q } = (req.query);
+        var searchInp = q
+        q = q ? q.toLowerCase() : '';
 
-    console.log(q);
-    const allbooks = await bookModel.find()
-    let books = [];
+        const allbooks = await bookModel.find()
+        let books = [];
 
-    if (q) {
-        allbooks.forEach(book => {
-            if (book.bookName.toLowerCase().includes(q) || book.bookAuthor.toLowerCase().includes(q) || book.bookPublisher.toLowerCase().includes(q)) {
-                books.push(book);
+        if (q) {
+            allbooks.forEach(book => {
+                if (book.bookName.toLowerCase().includes(q) || book.bookAuthor.toLowerCase().includes(q) || book.bookPublisher.toLowerCase().includes(q)) {
+                    books.push(book);
+                }
+            });
+            if (books.length == 0) {
+                return res.status(404).render('home', { user, books, searchInp, err: 'Books Not Found' });
             }
-        });
-        res.render('home', { user, books, err: null });
+            return res.status(200).render('home', { user, books, searchInp, err: null });
+        }
+    }
+    catch(e){
+        return res.status(404).render('404',{ err: e})
     }
 
 });
@@ -120,7 +139,7 @@ bookRouter.get('/search', async (req, res) => {
 bookRouter.route('/recharge')
     .get(async (req, res) => {
         const user = await userModel.findById(req.id);
-        res.render('recharge', { user, err: null });
+        return res.status(200).render('recharge', { user, err: null });
     })
     .post(async (req, res) => {
         const { credit } = req.body;
@@ -129,7 +148,7 @@ bookRouter.route('/recharge')
         await userModel.findOneAndUpdate(user, {
             userwallet: newAmount,
         });
-        res.redirect('/profile');
+        return res.status(200).redirect('/profile');
 
 
     });

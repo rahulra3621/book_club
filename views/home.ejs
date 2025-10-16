@@ -19,11 +19,18 @@
     </nav>
     <main>
         <form action="/search" method="GET">
-            <input type="text" name="q" placeholder="Search books, authors, publishers...">
-            <button type="submit">Search</button>
+            <input type="text" name="q" id="search-in" value="<%=searchInp%>" placeholder="Search books, authors, publishers...">
+            <button type="submit" onclick="search()">Search</button>
         </form>
-
+        <% if (searchInp) { %>
+            <p>Displaying Search Result: <%=searchInp%></p>
+        <% } %>
         <h1>Books</h1>
+        <% if (err && books.length==0) { %>
+            <p class="error">
+                <%=err%>
+            </p>
+        <% } %>
         <% let count=1 %>
             <div class="grid">
                 <% for (const book of books) { %>
@@ -57,6 +64,14 @@
                 window.location.reload();
             }
         });
+        <!-- function search(){
+            let searchinp = document.getElementById('search-in');
+            let val = searchinp.value;
+            searchinp.value = val;
+            let searchword = document.getElementById('search-res-word');
+            searchword.textContent=`Displaying Search Result: ${val}`;
+            searchword.style.display = 'block';
+        } -->
     </script>
 
 </body>

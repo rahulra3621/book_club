@@ -14,23 +14,28 @@ userRouter.route('/login')
         res.render('login', { err });
     })
     .post(async (req, res) => {
-        const { email, password } = req.body;
-        const user = await userModel.findOne({
-            usermail: email,
-        });
-        if (!user) {
-            res.render('login', { err: 'User Not Found!' })
-        }
-        else {
-            const validPassword = await bcrypt.compare(password, user.userpasswd);
-            if (!validPassword) {
-                res.render('login', { err: 'Invalid Credentials !!!' })
+        try {
+            const { email, password } = req.body;
+            const user = await userModel.findOne({
+                usermail: email,
+            });
+            if (!user) {
+                res.status(404).render('login', { err: 'User Not Found!' })
             }
             else {
-                const token = await jwt.sign({ id: user._id }, SECRET_KEY);
-                res.cookie('token', token, { httpOnly: true })
-                res.redirect(`/home`);
+                const validPassword = await bcrypt.compare(password, user.userpasswd);
+                if (!validPassword) {
+                    res.status(401).render('login', { err: 'Invalid Credentials !!!' })
+                }
+                else {
+                    const token = await jwt.sign({ id: user._id }, SECRET_KEY);
+                    res.cookie('token', token, { httpOnly: true })
+                    res.status(200).redirect(`/home`);
+                }
             }
+        }
+        catch(e){
+            res.status(403).render('login', { err: 'Login Failed!' })
         }
 
     });
@@ -42,27 +47,35 @@ userRouter.route('/register')
         res.render('register', { err: null });
     })
     .post(async (req, res) => {
-        const { username, password, email } = req.body;
-        if (username && password && email) {
-            const hashedPassword = await bcrypt.hash(password, 5);
-            const check = await userModel.findOne({
-                usermail: email,
-            })
-            if (check) {
-                res.render('register', { err: 'User with this Email already exist.' })
-            }
-            else {
-                const user = await userModel.create({
-                    username: username,
-                    userpasswd: hashedPassword,
+        try {
+            const { username, password, email } = req.body;
+            if (username && password && email && !Number(username)) {
+                const hashedPassword = await bcrypt.hash(password, 5);
+                const check = await userModel.findOne({
                     usermail: email,
                 })
-                console.log(user);
-                res.redirect('/login')
+                if (check) {
+                    res.render('register', { err: 'User with this Email already exist.' })
+                }
+                else {
+                    const user = await userModel.create({
+                        username: username,
+                        userpasswd: hashedPassword,
+                        usermail: email,
+                    })
+                    console.log(user);
+                    res.redirect('/login')
+                }
+            }
+            else if (Number(username)) {
+                res.status(400).render('register', { err: 'Username cannot be only numbers!' })
+            }
+            else {
+                res.status(404).render('register', { err: 'All fields are required !!!' })
             }
         }
-        else {
-            res.render('register', { err: 'All fields are required !!!' })
+        catch (e) {
+            res.status(403).render('register', { err: "Error: User Not Created " + e });
         }
     });
 
@@ -73,20 +86,25 @@ userRouter.route('/reset')
         res.render('reset', { err: null });
     })
     .post(async (req, res) => {
-        const { username, password, email } = req.body;
-        const user = await userModel.findOne({
-            username: username,
-            usermail: email,
-        })
-        if (user) {
-            const hashedPassword = await bcrypt.hash(password, 5);
-            await userModel.findOneAndUpdate(user, {
-                userpasswd: hashedPassword,
+        try {
+            const { username, password, email } = req.body;
+            const user = await userModel.findOne({
+                username: username,
+                usermail: email,
             })
-            res.render('reset', { err: 'Password reset successfully!!' })
+            if (user) {
+                const hashedPassword = await bcrypt.hash(password, 5);
+                await userModel.findOneAndUpdate(user, {
+                    userpasswd: hashedPassword,
+                })
+                res.status(200).render('reset', { err: 'Password reset successfully!!' })
+            }
+            else {
+                res.status(404).render('reset', { err: 'Cannot find any user with this Username and Email' });
+            }
         }
-        else {
-            res.render('reset', { err: 'Cannot find any user with this Name and Email' });
+        catch (e) {
+            res.status(403).render('reset', { err: "Something Went Wrong!!!" })
         }
     });
 

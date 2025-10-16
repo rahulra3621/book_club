@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 8rem;
+      font-weight: 700;
+      color: #0ea5e9;
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    p {
+      font-size: 1.3rem;
+      color: #475569;
+      margin-bottom: 25px;
+    }
+
+    a {
+      background-color: #0ea5e9;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #0284c7;
+      transform: scale(1.05);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 5rem; }
+      p { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>404</h1>
+  <p>Oops! <%=err%></p>
+  <a href="/home">Go Back Home</a>
+</body>
+</html>
