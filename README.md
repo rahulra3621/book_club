@@ -115,7 +115,7 @@ Views present:
 
 ## Business Rules
 - Renting a book deducts full `bookPrice` from `userwallet` and marks the book as issued.
-- Returning a book refunds 90% of `bookPrice` and resets `isIssued`/`isIssuedTo`.
+- Returning a book resets `isIssued`/`isIssuedTo`.
 - Checkout requires sufficient wallet balance; otherwise, user is sent to `recharge`.
 - Search matches `bookName`, `bookAuthor`, or `bookPublisher` (case-insensitive, substring).
 
