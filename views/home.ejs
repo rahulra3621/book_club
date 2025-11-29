@@ -56,15 +56,15 @@
                                                     </strong></p>
                                                 <p class="muted-block">Publisher: <%=book.bookPublisher%>
                                                 </p>
-                                                <p><strong>Price:</strong> ₹<%=book.bookPrice%>
+                                                <p><strong>Price:</strong> <%=book.bookPrice%> credits
                                                 </p>
                                                 <div class="actions">
                                                     <a class="btn" href="/home/rent/<%=book._id%>">Rent</a>
                                                 </div>
+                                                <% if (user.usertype=='admin' ) { %>
                                                 <div class="actions">
                                                     <a class="btn" href="/home/editbook/<%=book._id%>">Edit</a>
                                                 </div>
-                                                <% if (user.usertype=='admin' ) { %>
                                                     <a class="btn" id="btn-deletebook" href="/home/deletebook/<%=book._id%>">Delete</a>
                                                 <% } %>
                                     </div>
