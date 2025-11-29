@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Book
+    </title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <nav>
+        <a href="/home">Book Club</a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
+        <a href="/mybooks">My Books</a>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-addbook" href="/home/addbook">+ Add Book</a>
+            <% } %>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-viewusers" href="/viewusers">View Users</a>
+            <% } %>
+                <a href="/logout">Log Out</a>
+    </nav>
+    <h1>Deleted Book</h1>
+    <p class="error">
+            This book has been deleted from database!!!
+        </p>
+    <fieldset>
+        <p>Book Name: <span>
+                <%=deletedBook.bookName%>
+            </span></p>
+        <p>Book Author: <span>
+                <%=deletedBook.bookAuthor%>
+            </span></p>
+        <p>Book Publisher: <span>
+                <%=deletedBook.bookPublisher%>
+            </span></p>
+        <p>Book Price: <span>
+                <%=deletedBook.bookPrice%> credits
+            </span></p>
+        <p>Book Issued: <span>
+                <%=deletedBook.isIssued%>
+            </span></p>
+        <p class="error">
+            <%=err%>
+        </p>
+    </fieldset>
+
+    <script>
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+        // Disable delete button if there's an error
+        const hasError = Boolean("<%=err%>");
+
+        if (hasError) {
+            const deleteBtn = document.getElementById('btn-deletebook');
+            deleteBtn.style.pointerEvents = "none"; // Disable clicking
+            deleteBtn.style.opacity = "0.5";        // Make visually disabled
+            deleteBtn.style.cursor = "not-allowed";
+        }
+
+    </script>
+
+</body>
+
+</html>

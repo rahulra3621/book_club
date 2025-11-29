@@ -16,7 +16,13 @@
             <%=user.username%>
         </a>
         <a href="/mybooks">My Books</a>
-        <a href="/logout">Log Out</a>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-addbook" href="/home/addbook">+ Add Book</a>
+            <% } %>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-viewusers" href="/viewusers">View Users</a>
+            <% } %>
+                <a href="/logout">Log Out</a>
     </nav>
 
     <fieldset>

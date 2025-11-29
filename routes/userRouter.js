@@ -39,6 +39,40 @@ userRouter.route('/login')
         }
 
     });
+userRouter.route('/login/admin')
+    .get((req, res) => {
+        let err = req.cookies.err;
+        res.render('login', { err:'Admin Login' });
+    })
+    .post(async (req, res) => {
+        try {
+            const { email, password } = req.body;
+            const user = await userModel.findOne({
+                usermail: email,
+            });
+            if (!user) {
+                res.status(404).render('login', { err: 'User Not Found!' })
+            }
+            else if(user.usertype=="user"){
+                return res.status(401).render('login', { err: 'You are not Authorized User for Admin Login' })
+            }
+            else {
+                const validPassword = await bcrypt.compare(password, user.userpasswd);
+                if (!validPassword) {
+                    res.status(401).render('login', { err: 'Invalid Credentials !!!' })
+                }
+                else {
+                    const token = await jwt.sign({ id: user._id }, SECRET_KEY);
+                    res.cookie('token', token, { httpOnly: true })
+                    res.status(200).redirect(`/home`);
+                }
+            }
+        }
+        catch(e){
+            res.status(403).render('login', { err: 'Login Failed!'+e })
+        }
+
+    });
 
 // --------------------------------- Register ------------------------------------------------
 

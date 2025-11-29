@@ -1,6 +1,7 @@
 const express = require('express');
 const bookModel = require('../models/bookModel');
 const userModel = require('../models/userModel');
+const { use } = require('react');
 const bookRouter = express.Router();
 
 
@@ -23,6 +24,74 @@ bookRouter.get('/home', async (req, res) => {
     const user = await userModel.findById(req.id)
     let searchInp = null;
     return res.status(200).render('home', { user, books, searchInp, err: null })
+});
+
+
+// ----------------------------------- Add Books -----------------------------------------------
+
+bookRouter.get('/home/addbook', async (req, res) => {
+    const user = await userModel.findById(req.id);
+    if (user.usertype=='admin'){
+        return res.status(200).render('addbook', {user, err:null});
+    }
+    return res.status(200).redirect('/home');
+});
+bookRouter.post('/home/addbook', async (req, res) => {
+    const {bookname,authorname,publishername,bookprice} = req.body;
+    await bookModel.create({
+        bookName:bookname,
+        bookAuthor:authorname,
+        bookPublisher:publishername,
+        bookPrice:bookprice,
+    })
+    return res.status(200).redirect('/home')
+});
+
+
+// ----------------------------------- Edit Books -----------------------------------------------
+
+bookRouter.get('/home/editbook/:id', async (req, res) => {
+    const user = await userModel.findById(req.id);
+    const book = await bookModel.findById(req.params.id);
+    if (user.usertype=='admin'){
+        return res.status(200).render('editbook', {user,book, err:null});
+    }
+    return res.status(200).redirect('/home');
+});
+bookRouter.post('/home/editbook/:id', async (req, res) => {
+    const {bookname,authorname,publishername,bookprice,isissued} = req.body;
+    const bookissue = isissued? true : false;
+    await bookModel.findByIdAndUpdate(req.params.id, {
+        bookName:bookname,
+        bookAuthor:authorname,
+        bookPublisher:publishername,
+        bookPrice:bookprice,
+        isIssued:bookissue,
+    })
+    return res.status(200).redirect('/home')
+});
+
+
+// ----------------------------------- Delete Books -----------------------------------------------
+
+bookRouter.get('/home/deletebook/:id', async (req, res) => {
+    const user = await userModel.findById(req.id);
+    const book = await bookModel.findById(req.params.id);
+    if (book && user.usertype=='admin'){
+        if (book.isIssued){
+            return res.status(200).render('deletebook', {user,book, err:'Book is Issued to a User!!!'});
+        }
+        return res.status(200).render('deletebook', {user,book,err:null});
+    }
+    return res.status(200).redirect('/home');
+});
+bookRouter.post('/home/deletebook/:id', async (req, res) => {
+    const deletedBook = await bookModel.findById(req.params.id);
+    if (deletedBook){
+        await bookModel.findByIdAndDelete(req.params.id);
+    }
+    const user = await userModel.findById(req.id);
+    return res.status(200).render('deletedbook',{user, deletedBook, err:null})
 });
 
 // ------------------------------------- Profile ---------------------------------------------------
@@ -152,5 +221,11 @@ bookRouter.route('/recharge')
 
 
     });
+
+bookRouter.get('/viewusers', async (req,res)=>{
+    const user = await userModel.findById(req.id);
+    const allusers = await userModel.find();
+    return res.status(200).render('allusers', {user,allusers,searchInp:null,err:null});
+})
 
 module.exports = bookRouter;

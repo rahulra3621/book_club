@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookClub - Homepage</title>
+    <title>BookClub - All Users</title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
 
@@ -26,46 +26,38 @@
     <main>
         <form action="/search" method="GET">
             <input type="text" name="q" id="search-in" value="<%=searchInp%>"
-                placeholder="Search books, authors, publishers...">
+                placeholder="Search user...">
             <button type="submit" onclick="search()">Search</button>
         </form>
         <% if (searchInp) { %>
             <p>Displaying Search Result: <%=searchInp%>
             </p>
             <% } %>
-                <h1>Books</h1>
-                <% if (err && books.length==0) { %>
+                <h1>Users</h1>
+                <% if (err && allusers.length==0) { %>
                     <p class="error">
-                        <%=err%>
+                        Users Not Found!!!
                     </p>
                     <% } %>
                         <% let count=1 %>
                             <div class="grid">
-                                <% for (const book of books) { %>
+                                <% for (const usr of allusers) { %>
                                     <div class="card">
-                                        <% if (err && book.id==id) { %>
+                                        <!-- <% if (err && usr.id==id) { %>
                                             <p class="error">
                                                 <%=err%>
                                             </p>
-                                            <% } %>
-                                                <h4>
-                                                    <%=book.bookName%>
-                                                </h4>
-                                                <p class="muted-block">by <strong>
-                                                        <%=book.bookAuthor%>
-                                                    </strong></p>
-                                                <p class="muted-block">Publisher: <%=book.bookPublisher%>
-                                                </p>
-                                                <p><strong>Price:</strong> ₹<%=book.bookPrice%>
-                                                </p>
-                                                <div class="actions">
-                                                    <a class="btn" href="/home/rent/<%=book._id%>">Rent</a>
-                                                </div>
-                                                <div class="actions">
-                                                    <a class="btn" href="/home/editbook/<%=book._id%>">Edit</a>
-                                                </div>
+                                            <% } %> -->
+                                                <p><strong>Name: </strong> <%=usr.username%></p>
+                                                <p><strong>Email: </strong> <%=usr.usermail%></p>
+                                                <p><strong>Wallet: </strong> <%=usr.userwallet%></p>
+                                                <!-- <p><strong>Books Issued: </strong> <%=usr.bookIssued%></p> -->
+                                                <p><strong>User Type: </strong> <%=usr.usertype%></p>
                                                 <% if (user.usertype=='admin' ) { %>
-                                                    <a class="btn" id="btn-deletebook" href="/home/deletebook/<%=book._id%>">Delete</a>
+                                                    <a class="btn" id="btn-updateuser" href="/home/updateuser/<%=user._id%>">Update User</a>
+                                                <% } %>
+                                                <% if (user.usertype=='admin' ) { %>
+                                                    <a class="btn" id="btn-deleteuser" href="/home/deleteuser/<%=user._id%>">Delete User</a>
                                                 <% } %>
                                     </div>
                                     <%count++%>

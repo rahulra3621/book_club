@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - <%=user.username%>
+    <title>Delete Book
     </title>
     <link rel="stylesheet" href="/css/index.css">
 </head>
@@ -24,16 +24,28 @@
             <% } %>
                 <a href="/logout">Log Out</a>
     </nav>
-    <h1>Checkout</h1>
+    <h1>Delete Book</h1>
     <fieldset>
-        <p>Item Name: <span>
+        <p>Book Name: <span>
                 <%=book.bookName%>
             </span></p>
-        <p>Price: <span>
+        <p>Book Author: <span>
+                <%=book.bookAuthor%>
+            </span></p>
+        <p>Book Publisher: <span>
+                <%=book.bookPublisher%>
+            </span></p>
+        <p>Book Price: <span>
                 <%=book.bookPrice%> credits
             </span></p>
-        <form action="/checkout/<%=book.id%>" method="GET">
-            <button class="btn">Rent Book</button>
+        <p>Book Issued: <span>
+                <%=book.isIssued%>
+            </span></p>
+        <p class="error">
+            <%=err%>
+        </p>
+        <form action="/home/deletebook/<%=book.id%>" method="POST">
+            <button id="btn-deletebook" class="btn" <%=err ? "disabled" : "" %>>Delete Book</button>
         </form>
     </fieldset>
 
@@ -43,6 +55,16 @@
                 window.location.reload();
             }
         });
+        // Disable delete button if there's an error
+        const hasError = Boolean("<%=err%>");
+
+        if (hasError) {
+            const deleteBtn = document.getElementById('btn-deletebook');
+            deleteBtn.style.pointerEvents = "none"; // Disable clicking
+            deleteBtn.style.opacity = "0.5";        // Make visually disabled
+            deleteBtn.style.cursor = "not-allowed";
+        }
+
     </script>
 
 </body>

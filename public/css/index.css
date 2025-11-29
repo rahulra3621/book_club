@@ -99,6 +99,13 @@ input[type="password"] {
     border-radius: 8px;
     background: #fff;
 }
+input[type="checkbox"]{
+    display: inline-block;
+    position: relative;
+}
+/* #isissued{
+    display: inline-block;
+} */
 
 button,
 .btn {
@@ -112,7 +119,20 @@ button,
     color: #fff;
     font-weight: 600;
     cursor: pointer;
+    width: fit-content;
 }
+
+#btn-addbook{
+    justify-content: center;
+    font-size: large;
+}
+
+#btn-deletebook, #btn-deleteuser{
+    background-color: rgb(231, 0, 0);
+    justify-content: center;
+    font-size: large;
+}
+
 
 button:hover,
 .btn:hover {

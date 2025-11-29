@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { type } = require('os');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -23,6 +24,10 @@ const userSchema = new mongoose.Schema({
         type: Object,
         default: null,
     },
+    usertype:{
+        type:String,
+        default:"user"
+    }
 });
 const userModel = mongoose.model('user', userSchema);
 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookClub - Edit Book</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <nav>
+        <a href="/home">Book Club</a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
+        <a href="/mybooks">My Books</a>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-addbook" href="/home/addbook">+ Add Book</a>
+            <% } %>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-viewusers" href="/viewusers">View Users</a>
+            <% } %>
+                <a href="/logout">Log Out</a>
+    </nav>
+
+    <main>
+        <h1>Update Book Details</h1>
+        <form action="" method="post">
+            <label>Book Name</label>
+            <input type="text" name="bookname" id="bookname" value="<%=book.bookName%>" placeholder="Book Name">
+            <label>Author Name</label>
+            <input type="text" name="authorname" id="authorname" value="<%=book.bookAuthor%>" placeholder="Author Name">
+            <label>Publisher Name</label>
+            <input type="text" name="publishername" id="publishername" value="<%=book.bookPublisher%>" placeholder="Publisher Name">
+            <label>Book Issued: </label>
+            <input type="checkbox" name="isissued" id="isissued" value="true" <%= book.isIssued ? "checked" : "" %>>
+            <label>Book Price</label>
+            <input type="text" name="bookprice" id="bookprice" value="<%=book.bookPrice%>" placeholder="Book Price">
+            
+            <% if (err) { %>
+                <p class="error"><%=err%></p>
+            <% } %>
+            <div class="actions">
+                <button type="submit">Update Book</button>
+            </div>
+        </form>
+    </main>
+    <script>
+        let isIssued = "<%=book.isIssued%>";
+        console.log(isIssued);
+        if (isIssued){
+            const checkbox = document.getElementById('isissued');
+            checkbox.style.pointerEvents = "none"; // Disable clicking
+            checkbox.style.opacity = "0.5";        // Make visually disabled
+            checkbox.style.cursor = "not-allowed";
+        }
+    </script>
+</body>
+
+</html>

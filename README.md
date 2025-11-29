@@ -3,7 +3,7 @@
 An Express.js Book Club application using EJS views, MongoDB (via Mongoose), cookies, and JWT-based auth middleware.
 
 ## Live Demo
-- App on Vercel: [BookClubApp Deployment](https://book-club-git-main-rahul-rajputs-projects-c3ee2aaf.vercel.app?_vercel_share=yR2EAMEVzmp2A3Homguh4FWRbwGSAwBh)
+- App on Vercel: [BookClubApp Deployment](https://book-club-livid.vercel.app/)
 
 ## Prerequisites
 - Node.js (LTS recommended)
@@ -55,30 +55,42 @@ App starts at `http://localhost:4000`.
 ### Routes and Views
 
 Public routes (no JWT):
-- `GET /` → renders `views/index.ejs`
-- `GET /login` → renders `views/login.ejs`
+- `GET /` → renders `index`
+- `GET /login` → renders `login`
 - `POST /login` → authenticate, sets `token` cookie, redirects to `/home`
-- `GET /register` → renders `views/register.ejs`
+- `GET /login/admin` → for admin login, renders `login`
+- `POST /login/admin` → verifies usertype, authenticate, sets `token` cookie, redirects to `/home`
+- `GET /register` → renders `register`
 - `POST /register` → create user, redirects to `/login`
-- `GET /reset` → renders `views/reset.ejs`
+- `GET /reset` → renders `reset`
 - `POST /reset` → reset password (by `username` + `email`), renders `reset`
 
 Protected routes (require valid `token` cookie; see `middleware/authMiddleware.js`):
 - `GET /logout` → clears `token`, renders `index`
-- `GET /home` → renders `views/home.ejs` with `{ user, books, err }`
-- `GET /profile` → renders `views/profile.ejs` with `{ user }`
+- `GET /home` → renders `home` with `{ user, books, err }`
+- `GET /profile` → renders `profile` with `{ user }`
 - `GET /home/rent/:bookId` → rent flow gate; if issued, renders `home` with error; else `checkout`
 - `GET /checkout/:bookId` → performs debit and marks book issued; renders `rentSuccess` or `recharge`
-- `GET /mybooks` → renders `views/mybooks.ejs` with `{ user, books }`
-- `GET /mybooks/return/:bookId` → returns book, refunds 90%, renders `returnSuccess`
+- `GET /mybooks` → renders `mybooks` with `{ user, books }`
+- `GET /mybooks/return/:bookId` → returns book, renders `returnSuccess`
 - `GET /search?q=...` → case-insensitive search by name/author/publisher; renders `home`
-- `GET /recharge` → renders `views/recharge.ejs`
+- `GET /recharge` → renders `recharge`
 - `POST /recharge` → credits wallet from form, redirects to `/profile`
+- Only admin role routes (require `usertype:admin` for these routes else `home` will be rendered)
+  - `GET /home/addbook` → renders `addbook` with `{ user, err }`
+  - `POST /home/addbook` → creates new book in DB and redirects to `/home`
+  - `GET /home/editbook/:bookId` → renders `editbook` with `{ user, book, err }`
+  - `POST /home/editbook` → updates book information in DB and redirects to `/home`
+  - `GET /home/deletebook/:bookId` → renders `deletebook` with `{ user, book, err }`
+    - If the book is already issued then it can't be deleted.
+  - `POST /home/deletebook` → deletes book from DB and renders `deletedbook`
+  - `GET /viewusers` → renders `allusers` with `{ user, allusers, searchInp, err }`
 
 Views present:
 - `views/index.ejs`, `home.ejs`, `login.ejs`, `register.ejs`, `reset.ejs`
 - `profile.ejs`, `mybooks.ejs`, `checkout.ejs`, `rentSuccess.ejs`, `returnSuccess.ejs`
-- `recharge.ejs`, `payment.ejs` (present, not directly routed)
+- `recharge.ejs`, `addbook.ejs`, `editbook.ejs`, `deletebook.ejs`, `deletedbook.ejs`
+- `allusers.ejs`, `404.ejs`, `payment.ejs` (present, not directly routed)
 
 ## Tech Stack
 - Express 5
@@ -97,6 +109,7 @@ Views present:
 - `usermail: String` (unique by usage in code path, required)
 - `userwallet: Number` (default 0)
 - `bookIssued: Object` (unused in current flows, default null)
+- `usertype: String` (default user, required)
 
 `models/bookModel.js`
 - `bookName: String` (required)
@@ -115,7 +128,7 @@ Views present:
 
 ## Business Rules
 - Renting a book deducts full `bookPrice` from `userwallet` and marks the book as issued.
-- Returning a book refunds 90% of `bookPrice` and resets `isIssued`/`isIssuedTo`.
+- Returning a book resets `isIssued`/`isIssuedTo`.
 - Checkout requires sufficient wallet balance; otherwise, user is sent to `recharge`.
 - Search matches `bookName`, `bookAuthor`, or `bookPublisher` (case-insensitive, substring).
 

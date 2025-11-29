@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookClub - Add Book</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <nav>
+        <a href="/home">Book Club</a>
+        <a href="/profile">
+            <%=user.username%>
+        </a>
+        <a href="/mybooks">My Books</a>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-addbook" href="/home/addbook">+ Add Book</a>
+            <% } %>
+        <% if (user.usertype=='admin' ) { %>
+            <a class="btn" id="btn-viewusers" href="/viewusers">View Users</a>
+            <% } %>
+                <a href="/logout">Log Out</a>
+    </nav>
+
+    <main>
+        <h1>Add Book Details</h1>
+        <form action="" method="post">
+            <label>Book Name</label>
+            <input type="text" name="bookname" id="bookname" placeholder="Book Name">
+            <label>Author Name</label>
+            <input type="text" name="authorname" id="authorname" placeholder="Author Name">
+            <label>Publisher Name</label>
+            <input type="text" name="publishername" id="publishername" placeholder="Publisher Name">
+            <label>Book Price</label>
+            <input type="text" name="bookprice" id="bookprice" placeholder="Book Price">
+            
+            <% if (err) { %>
+                <p class="error"><%=err%></p>
+            <% } %>
+            <div class="actions">
+                <button type="submit">Add Book</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>
